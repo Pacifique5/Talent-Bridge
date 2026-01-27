@@ -9,10 +9,10 @@ export default function Hero() {
   return (
     <div className="flex flex-col lg:flex-row items-center gap-[2rem] md:gap-[5rem] lg:gap-[9rem] mx-8 mt-[6rem] md:mt-[10rem]">
       <div className="flex flex-col gap-3 md:pl-[3rem] relative">
-        <h1 className="text-blue-light text-3xl md:text-[40px] font-bold md:font-extrabold">
+        <h1 className="text-blue-light dark:text-blue-400 text-3xl md:text-[40px] font-bold md:font-extrabold">
           Build Work Experience <br /> through Skills Challenges <br /> Program
         </h1>
-        <p className="text-gray-800 text-[14px] sm:text-[16px]">
+        <p className="text-gray-800 dark:text-gray-300 text-[14px] sm:text-[16px]">
           Enhance your Employability and Accelerate your Career <br /> Growth by
           working on Hands-on projects & hackathons <br /> from various
           businesses & organizations.

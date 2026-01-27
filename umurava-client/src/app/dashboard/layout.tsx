@@ -16,10 +16,13 @@ import {
   Camera,
   Lock,
   Mail,
-  Edit
+  Edit,
+  Moon,
+  Sun
 } from "lucide-react";
 import { RootState, AppDispatch } from "@/store";
 import { logoutUser, initializeAuth } from "@/store/authSlice";
+import { useTheme } from "@/contexts/ThemeContext";
 import ProfileModal from "@/components/dashboard/ProfileModal";
 import ChangePasswordModal from "@/components/dashboard/ChangePasswordModal";
 
@@ -30,6 +33,7 @@ export default function DashboardLayout({
 }) {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated, loading } = useSelector((state: RootState) => state.auth);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -55,7 +59,7 @@ export default function DashboardLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-light"></div>
       </div>
     );
@@ -117,11 +121,11 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Sidebar */}
-      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg border-r border-gray-200 dark:border-gray-700">
+      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg border-r border-gray-200 dark:border-gray-700 transition-colors duration-300">
         <div className="flex h-full flex-col">
           {/* Logo */}
           <div className="flex h-16 shrink-0 items-center px-6 border-b border-gray-200 dark:border-gray-700">
-            <h1 className="text-xl font-bold text-blue-light">Umurava</h1>
+            <h1 className="text-xl font-bold text-blue-light dark:text-blue-400">Umurava</h1>
           </div>
 
           {/* Navigation */}
@@ -131,7 +135,7 @@ export default function DashboardLayout({
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="group flex gap-x-3 rounded-md p-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-light transition-colors"
+                    className="group flex gap-x-3 rounded-md p-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-light dark:hover:text-blue-400 transition-colors"
                   >
                     <item.icon className="h-5 w-5 shrink-0" />
                     {item.name}
@@ -148,7 +152,7 @@ export default function DashboardLayout({
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex w-full items-center gap-x-3 rounded-md p-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-light text-white font-semibold">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-light dark:bg-blue-600 text-white font-semibold">
                   {user?.firstName?.[0]}{user?.lastName?.[0]}
                 </div>
                 <div className="flex-1 min-w-0 text-left">
@@ -157,19 +161,19 @@ export default function DashboardLayout({
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
                 </div>
-                <ChevronDown className="h-4 w-4 text-gray-400" />
+                <ChevronDown className="h-4 w-4 text-gray-400 dark:text-gray-500" />
               </button>
 
               {/* Profile Dropdown */}
               {showProfileMenu && (
-                <div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50 animate-fade-in">
+                <div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
                   {profileMenuItems.map((item) => (
                     <button
                       key={item.name}
                       onClick={item.action}
                       className="flex w-full items-center gap-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     >
-                      <item.icon className="h-4 w-4 text-gray-400" />
+                      <item.icon className="h-4 w-4 text-gray-400 dark:text-gray-500" />
                       {item.name}
                     </button>
                   ))}
@@ -191,10 +195,19 @@ export default function DashboardLayout({
       {/* Main content */}
       <div className="pl-64">
         {/* Top bar */}
-        <div className="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div className="sticky top-0 z-40 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors duration-300">
           <div className="flex h-16 items-center justify-between px-6">
             <div className="flex-1"></div>
             <div className="flex items-center gap-x-4">
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+              >
+                {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              </button>
+
               {/* Notifications */}
               <div className="relative">
                 <button
@@ -209,7 +222,7 @@ export default function DashboardLayout({
                 
                 {/* Notifications Dropdown */}
                 {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50 animate-fade-in">
+                  <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
                     <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
                       <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">Notifications</h3>
                     </div>
@@ -228,7 +241,7 @@ export default function DashboardLayout({
                       </div>
                     </div>
                     <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700">
-                      <button className="text-sm text-blue-light hover:text-blue-dark transition-colors">
+                      <button className="text-sm text-blue-light dark:text-blue-400 hover:text-blue-dark dark:hover:text-blue-300 transition-colors">
                         View all notifications
                       </button>
                     </div>
