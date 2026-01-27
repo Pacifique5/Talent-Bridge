@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ReduxProvider } from "@/store/Provider";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,9 +14,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en">
-      <body className="antialiased">
-      <ReduxProvider>{children}</ReduxProvider>
+      <html lang="en" suppressHydrationWarning>
+      <body className="antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+      <ThemeProvider>
+        <ReduxProvider>{children}</ReduxProvider>
+      </ThemeProvider>
       </body>
       </html>
   );

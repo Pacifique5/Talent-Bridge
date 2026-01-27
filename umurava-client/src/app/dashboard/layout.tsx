@@ -115,12 +115,12 @@ export default function DashboardLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
       {/* Sidebar */}
-      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg">
+      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg border-r border-gray-200 dark:border-gray-700">
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex h-16 shrink-0 items-center px-6 border-b border-gray-200">
+          <div className="flex h-16 shrink-0 items-center px-6 border-b border-gray-200 dark:border-gray-700">
             <h1 className="text-xl font-bold text-blue-light">Umurava</h1>
           </div>
 
@@ -131,7 +131,7 @@ export default function DashboardLayout({
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="group flex gap-x-3 rounded-md p-3 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-blue-light transition-colors"
+                    className="group flex gap-x-3 rounded-md p-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-light transition-colors"
                   >
                     <item.icon className="h-5 w-5 shrink-0" />
                     {item.name}
@@ -142,41 +142,41 @@ export default function DashboardLayout({
           </nav>
 
           {/* User Profile Section */}
-          <div className="border-t border-gray-200 p-6">
+          <div className="border-t border-gray-200 dark:border-gray-700 p-6">
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex w-full items-center gap-x-3 rounded-md p-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex w-full items-center gap-x-3 rounded-md p-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-light text-white font-semibold">
                   {user?.firstName?.[0]}{user?.lastName?.[0]}
                 </div>
                 <div className="flex-1 min-w-0 text-left">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                     {user?.firstName} {user?.lastName}
                   </p>
-                  <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email}</p>
                 </div>
                 <ChevronDown className="h-4 w-4 text-gray-400" />
               </button>
 
               {/* Profile Dropdown */}
               {showProfileMenu && (
-                <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-md shadow-lg border border-gray-200 py-2 z-50">
+                <div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50 animate-fade-in">
                   {profileMenuItems.map((item) => (
                     <button
                       key={item.name}
                       onClick={item.action}
-                      className="flex w-full items-center gap-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex w-full items-center gap-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     >
                       <item.icon className="h-4 w-4 text-gray-400" />
                       {item.name}
                     </button>
                   ))}
-                  <hr className="my-2 border-gray-200" />
+                  <hr className="my-2 border-gray-200 dark:border-gray-700" />
                   <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-x-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    className="flex w-full items-center gap-x-3 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                   >
                     <LogOut className="h-4 w-4" />
                     Sign out
@@ -191,7 +191,7 @@ export default function DashboardLayout({
       {/* Main content */}
       <div className="pl-64">
         {/* Top bar */}
-        <div className="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-200">
+        <div className="sticky top-0 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-sm border-b border-gray-200 dark:border-gray-700">
           <div className="flex h-16 items-center justify-between px-6">
             <div className="flex-1"></div>
             <div className="flex items-center gap-x-4">
@@ -199,7 +199,7 @@ export default function DashboardLayout({
               <div className="relative">
                 <button
                   onClick={() => setShowNotifications(!showNotifications)}
-                  className="p-2 text-gray-400 hover:text-gray-600 relative"
+                  className="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 relative transition-colors"
                 >
                   <Bell className="h-5 w-5" />
                   <span className="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
@@ -209,26 +209,26 @@ export default function DashboardLayout({
                 
                 {/* Notifications Dropdown */}
                 {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg border border-gray-200 py-2 z-50">
-                    <div className="px-4 py-2 border-b border-gray-200">
-                      <h3 className="text-sm font-medium text-gray-900">Notifications</h3>
+                  <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50 animate-fade-in">
+                    <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                      <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">Notifications</h3>
                     </div>
                     <div className="max-h-64 overflow-y-auto">
-                      <div className="px-4 py-3 hover:bg-gray-50">
-                        <p className="text-sm text-gray-900">New challenge available</p>
-                        <p className="text-xs text-gray-500">2 minutes ago</p>
+                      <div className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <p className="text-sm text-gray-900 dark:text-gray-100">New challenge available</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">2 minutes ago</p>
                       </div>
-                      <div className="px-4 py-3 hover:bg-gray-50">
-                        <p className="text-sm text-gray-900">Your challenge was approved</p>
-                        <p className="text-xs text-gray-500">1 hour ago</p>
+                      <div className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <p className="text-sm text-gray-900 dark:text-gray-100">Your challenge was approved</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">1 hour ago</p>
                       </div>
-                      <div className="px-4 py-3 hover:bg-gray-50">
-                        <p className="text-sm text-gray-900">Welcome to Umurava!</p>
-                        <p className="text-xs text-gray-500">1 day ago</p>
+                      <div className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <p className="text-sm text-gray-900 dark:text-gray-100">Welcome to Umurava!</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">1 day ago</p>
                       </div>
                     </div>
-                    <div className="px-4 py-2 border-t border-gray-200">
-                      <button className="text-sm text-blue-light hover:text-blue-dark">
+                    <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700">
+                      <button className="text-sm text-blue-light hover:text-blue-dark transition-colors">
                         View all notifications
                       </button>
                     </div>
