@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  firstName String
-  lastName  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String      @id @default(uuid())
+  email      String      @unique
+  password   String
+  firstName  String
+  lastName   String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  challenges Challenge[]
 }
 
 model Challenge {
@@ -24,4 +25,6 @@ model Challenge {
   difficulty  String
   duration    Int
   createdAt   DateTime @default(now())
+  createdBy   String?
+  creator     User?    @relation(fields: [createdBy], references: [id])
 }

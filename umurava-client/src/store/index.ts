@@ -4,12 +4,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import challengesReducer from "./challengesSlice";
 import communityReducer from "./communitySlice";
+import authReducer from "./authSlice";
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         challenges: challengesReducer,
         community: communityReducer,
+        auth: authReducer,
     },
 });
 

@@ -1,4 +1,5 @@
 import { Challenge } from '@/types/challenge';
+import { authService } from './authService';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -20,39 +21,59 @@ export const challengeService = {
   },
 
   async createChallenge(challenge: Omit<Challenge, 'id' | 'createdAt'>): Promise<Challenge> {
+    console.log("🚀 Frontend: Creating challenge with auth");
+    
     const response = await fetch(`${API_BASE_URL}/api/challenges`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: authService.getAuthHeaders(),
       body: JSON.stringify(challenge),
     });
+    
     if (!response.ok) {
-      throw new Error('Failed to create challenge');
+      const error = await response.json();
+      console.error("❌ Frontend: Create challenge error:", error);
+      throw new Error(error.message || 'Failed to create challenge');
     }
-    return response.json();
+    
+    const result = await response.json();
+    console.log("✅ Frontend: Challenge created successfully");
+    return result;
   },
 
   async updateChallenge(id: string, challenge: Partial<Challenge>): Promise<Challenge> {
+    console.log("🚀 Frontend: Updating challenge with auth");
+    
     const response = await fetch(`${API_BASE_URL}/api/challenges/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: authService.getAuthHeaders(),
       body: JSON.stringify(challenge),
     });
+    
     if (!response.ok) {
-      throw new Error('Failed to update challenge');
+      const error = await response.json();
+      console.error("❌ Frontend: Update challenge error:", error);
+      throw new Error(error.message || 'Failed to update challenge');
     }
-    return response.json();
+    
+    const result = await response.json();
+    console.log("✅ Frontend: Challenge updated successfully");
+    return result;
   },
 
   async deleteChallenge(id: string): Promise<void> {
+    console.log("🚀 Frontend: Deleting challenge with auth");
+    
     const response = await fetch(`${API_BASE_URL}/api/challenges/${id}`, {
       method: 'DELETE',
+      headers: authService.getAuthHeaders(),
     });
+    
     if (!response.ok) {
-      throw new Error('Failed to delete challenge');
+      const error = await response.json();
+      console.error("❌ Frontend: Delete challenge error:", error);
+      throw new Error(error.message || 'Failed to delete challenge');
     }
+    
+    console.log("✅ Frontend: Challenge deleted successfully");
   },
 };

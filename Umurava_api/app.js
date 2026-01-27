@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoute");
 const contactRoutes = require("./routes/contactRoute");
 const userRoutes = require("./routes/userRoute");
 const communityRoutes = require("./routes/communityRoute");
+const dashboardRoutes = require("./routes/dashboardRoute");
 const errorHandler = require("./middleware/errorMiddleware");
 
 const app = express();
@@ -18,6 +19,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/community", communityRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.use(errorHandler);
 

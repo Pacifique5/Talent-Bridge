@@ -22,9 +22,12 @@ export const signupUser = createAsyncThunk(
   'auth/signup',
   async (userData: SignupData, { rejectWithValue }) => {
     try {
+      console.log("🔄 Redux: Dispatching signup action");
       const response = await authService.signup(userData);
+      console.log("✅ Redux: Signup action completed successfully");
       return response;
     } catch (error: any) {
+      console.error("❌ Redux: Signup action failed:", error.message);
       return rejectWithValue(error.message);
     }
   }
@@ -34,9 +37,12 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (userData: LoginData, { rejectWithValue }) => {
     try {
+      console.log("🔄 Redux: Dispatching login action");
       const response = await authService.login(userData);
+      console.log("✅ Redux: Login action completed successfully");
       return response;
     } catch (error: any) {
+      console.error("❌ Redux: Login action failed:", error.message);
       return rejectWithValue(error.message);
     }
   }

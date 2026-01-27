@@ -28,6 +28,9 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 export const authService = {
   async signup(data: SignupData): Promise<AuthResponse> {
+    console.log("🚀 Frontend: Making signup request to:", `${API_BASE_URL}/api/auth/signup`);
+    console.log("📤 Frontend: Signup data:", { ...data, password: '[HIDDEN]' });
+    
     const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
       method: 'POST',
       headers: {
@@ -36,23 +39,31 @@ export const authService = {
       body: JSON.stringify(data),
     });
 
+    console.log("📥 Frontend: Signup response status:", response.status);
+
     if (!response.ok) {
       const error = await response.json();
+      console.error("❌ Frontend: Signup error:", error);
       throw new Error(error.message || 'Signup failed');
     }
 
     const result = await response.json();
+    console.log("✅ Frontend: Signup successful:", result.message);
     
     // Store token in localStorage
     if (result.token) {
       localStorage.setItem('token', result.token);
       localStorage.setItem('user', JSON.stringify(result.user));
+      console.log("💾 Frontend: Token and user stored in localStorage");
     }
 
     return result;
   },
 
   async login(data: LoginData): Promise<AuthResponse> {
+    console.log("🚀 Frontend: Making login request to:", `${API_BASE_URL}/api/auth/login`);
+    console.log("📤 Frontend: Login data:", { email: data.email, password: '[HIDDEN]' });
+    
     const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: 'POST',
       headers: {
@@ -61,17 +72,22 @@ export const authService = {
       body: JSON.stringify(data),
     });
 
+    console.log("📥 Frontend: Login response status:", response.status);
+
     if (!response.ok) {
       const error = await response.json();
+      console.error("❌ Frontend: Login error:", error);
       throw new Error(error.message || 'Login failed');
     }
 
     const result = await response.json();
+    console.log("✅ Frontend: Login successful:", result.message);
     
     // Store token in localStorage
     if (result.token) {
       localStorage.setItem('token', result.token);
       localStorage.setItem('user', JSON.stringify(result.user));
+      console.log("💾 Frontend: Token and user stored in localStorage");
     }
 
     return result;
@@ -107,6 +123,15 @@ export const authService = {
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  },
+
+  // Helper method to get auth headers
+  getAuthHeaders(): Record<string, string> {
+    const token = this.getToken();
+    return {
+      'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token}` })
+    };
   },
 };
 

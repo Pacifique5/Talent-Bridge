@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 class AuthController {
     static async signup(req, res) {
         try {
+            console.log("📝 Signup request received:", req.body);
             const { email, password, firstName, lastName } = req.body;
 
             // Check if user already exists
@@ -15,6 +16,7 @@ class AuthController {
             });
 
             if (existingUser) {
+                console.log("❌ User already exists:", email);
                 return res.status(400).json({ message: "User already exists" });
             }
 
@@ -30,6 +32,8 @@ class AuthController {
                     lastName
                 }
             });
+
+            console.log("✅ User created successfully:", user.email);
 
             // Generate JWT token
             const token = jwt.sign(
@@ -49,13 +53,14 @@ class AuthController {
                 }
             });
         } catch (error) {
-            console.error("Signup error:", error);
+            console.error("❌ Signup error:", error);
             res.status(500).json({ message: "Internal server error" });
         }
     }
 
     static async login(req, res) {
         try {
+            console.log("🔐 Login request received:", req.body.email);
             const { email, password } = req.body;
 
             // Find user
@@ -64,14 +69,18 @@ class AuthController {
             });
 
             if (!user) {
+                console.log("❌ User not found:", email);
                 return res.status(401).json({ message: "Invalid credentials" });
             }
 
             // Check password
             const isValidPassword = await bcrypt.compare(password, user.password);
             if (!isValidPassword) {
+                console.log("❌ Invalid password for:", email);
                 return res.status(401).json({ message: "Invalid credentials" });
             }
+
+            console.log("✅ Login successful:", email);
 
             // Generate JWT token
             const token = jwt.sign(
@@ -91,7 +100,7 @@ class AuthController {
                 }
             });
         } catch (error) {
-            console.error("Login error:", error);
+            console.error("❌ Login error:", error);
             res.status(500).json({ message: "Internal server error" });
         }
     }

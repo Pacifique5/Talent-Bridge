@@ -3,9 +3,19 @@ const ChallengeService = require("../services/challengeService");
 const ChallengeController = {
     async create(req, res) {
         try {
-            const challenge = await ChallengeService.createChallenge(req.body);
+            console.log("🚀 Creating challenge for user:", req.user?.email);
+            
+            // Add the user ID to the challenge data
+            const challengeData = {
+                ...req.body,
+                createdBy: req.user?.id
+            };
+            
+            const challenge = await ChallengeService.createChallenge(challengeData);
+            console.log("✅ Challenge created successfully:", challenge.title);
             res.status(201).json(challenge);
         } catch (error) {
+            console.error("❌ Error creating challenge:", error);
             res.status(500).json({ message: "Error creating challenge", error });
         }
     },

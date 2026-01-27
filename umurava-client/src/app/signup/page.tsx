@@ -1,8 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
+import { RootState, AppDispatch } from "@/store";
+import { signupUser, clearError } from "@/store/authSlice";
 
 export default function SignupPage() {
     const [formData, setFormData] = useState({
@@ -15,7 +19,21 @@ export default function SignupPage() {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    
+    const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
+    const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.auth);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/dashboard/dashboard');
+        }
+    }, [isAuthenticated, router]);
+
+    useEffect(() => {
+        // Clear any previous errors when component mounts
+        dispatch(clearError());
+    }, [dispatch]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
@@ -31,15 +49,28 @@ export default function SignupPage() {
             alert("Passwords don't match!");
             return;
         }
+
+        if (formData.password.length < 6) {
+            alert("Password must be at least 6 characters long!");
+            return;
+        }
         
-        setIsLoading(true);
-        
-        // Simulate signup process
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Here you would typically handle the signup logic
-        console.log("Signup attempt:", formData);
-        setIsLoading(false);
+        try {
+            const result = await dispatch(signupUser({
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                password: formData.password,
+                phone: formData.phone
+            }));
+            
+            if (signupUser.fulfilled.match(result)) {
+                console.log("Signup successful:", result.payload);
+                // Redirect will happen via useEffect when isAuthenticated becomes true
+            }
+        } catch (err) {
+            console.error("Signup error:", err);
+        }
     };
 
     return (
@@ -54,6 +85,11 @@ export default function SignupPage() {
                         sign in to your existing account
                     </Link>
                 </p>
+                {error && (
+                    <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                        {error}
+                    </div>
+                )}
             </div>
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -231,10 +267,10 @@ export default function SignupPage() {
                         <div>
                             <button
                                 type="submit"
-                                disabled={isLoading}
+                                disabled={loading}
                                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-light hover:bg-blue-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-light disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {isLoading ? (
+                                {loading ? (
                                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                                 ) : (
                                     "Create Account"
