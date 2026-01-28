@@ -26,7 +26,7 @@ export default function PartnersSection() {
           Trusted by Leading Organizations
         </h1>
         <p className="text-gray-600 dark:text-gray-300 text-lg max-w-3xl mx-auto">
-          Join hundreds of companies and institutions that trust Umurava to develop their talent
+          Join hundreds of companies and institutions that trust TalentBridge to develop their talent
         </p>
       </div>
 

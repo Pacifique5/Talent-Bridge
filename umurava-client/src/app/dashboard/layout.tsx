@@ -125,7 +125,7 @@ export default function DashboardLayout({
         <div className="flex h-full flex-col">
           {/* Logo */}
           <div className="flex h-16 shrink-0 items-center px-6 border-b border-gray-200 dark:border-gray-700">
-            <h1 className="text-xl font-bold text-blue-light dark:text-blue-400">Umurava</h1>
+            <h1 className="text-xl font-bold text-blue-light dark:text-blue-400">TalentBridge</h1>
           </div>
 
           {/* Navigation */}
@@ -236,7 +236,7 @@ export default function DashboardLayout({
                         <p className="text-xs text-gray-500 dark:text-gray-400">1 hour ago</p>
                       </div>
                       <div className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        <p className="text-sm text-gray-900 dark:text-gray-100">Welcome to Umurava!</p>
+                        <p className="text-sm text-gray-900 dark:text-gray-100">Welcome to TalentBridge!</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">1 day ago</p>
                       </div>
                     </div>

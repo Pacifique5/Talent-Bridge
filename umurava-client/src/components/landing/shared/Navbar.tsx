@@ -68,8 +68,13 @@ export default function Navbar() {
   return (
     <div>
       <div className="lg:px-16 flex fixed w-screen left-0 top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg justify-between items-center pr-6 z-40 border-b border-gray-200/20 dark:border-gray-700/20">
-        <Link href={"/"}>
-          <Image src={logo2} alt="Umurava logo" height={90} />
+        <Link href={"/"} className="flex items-center gap-3">
+          <div className="bg-black rounded-lg p-2">
+            <Image src="/talentbridge.jpeg" alt="TalentBridge logo" height={50} width={60} className="rounded" />
+          </div>
+          <div className="text-2xl font-bold text-blue-light dark:text-blue-400">
+            TalentBridge
+          </div>
         </Link>
 
         {/* menu button */}

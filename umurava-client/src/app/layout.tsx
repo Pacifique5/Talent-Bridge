@@ -4,8 +4,8 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Umurava | Skills Challenges",
-  description: "EdTech Product called Skills Challenges",
+  title: "TalentBridge | Skills Challenges",
+  description: "EdTech Product called Skills Challenges - Connecting talent with opportunities through project-based learning",
 };
 
 export default function RootLayout({

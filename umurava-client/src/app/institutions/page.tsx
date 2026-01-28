@@ -73,7 +73,7 @@ export default function Page() {
 
         <div className="">
           <div className="md:h-[430px] md:w-[520px]">
-            <Image src={Banner} height={380} alt="Umurava hero image" />
+            <Image src={Banner} height={380} alt="TalentBridge hero image" />
           </div>
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function Page() {
       <div className="my-20 px-10 md:px-20 lg:px-26 relative z-[-1] bg-white dark:bg-gray-900 transition-colors duration-300">
         <h1 className="text-3xl md:text-[40px] font-bold md:font-extrabold text-center my-10 text-gray-900 dark:text-gray-100">
           Join a few Educational Institutions using <br /> Skills Challenges by
-          Umurava
+          TalentBridge
         </h1>
         {/* The marquee */}
         <div className="overflow-hidden">

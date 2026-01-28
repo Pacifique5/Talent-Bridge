@@ -9,7 +9,7 @@ export default function Section9() {
     <div className="relative text-white mx-10 md:mx-20 p-4 md:p-6 lg:p-10 lg:mx-36 bg-blue-light rounded-2xl mt-5 mb-10">
       <div className="flex flex-col gap-3 md:flex-row md:gap-10 lg:gap-20">
         <div className="w-[50%] h-[50%]">
-          <Image src={Banner3} alt="Umurava banner" />
+          <Image src={Banner3} alt="TalentBridge banner" />
         </div>
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-bold ">

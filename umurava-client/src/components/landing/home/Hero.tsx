@@ -27,13 +27,13 @@ export default function Hero() {
 
       <div className="relative flex gap-3">
         <div className="md:h-[330px] md:w-[220px] relative">
-          <Image src={hero1} height={380} alt="Umurava hero image" />
+          <Image src={hero1} height={380} alt="TalentBridge hero image" />
         </div>
         <div className="md:h-[330px] md:w-[220px] relative">
-          <Image src={hero2} height={380} alt="Umurava hero image" />
+          <Image src={hero2} height={380} alt="TalentBridge hero image" />
         </div>
         <div className="absolute bottom-0 -left-[30px] md:-left-[60px] z-0">
-          <Image src={hero3} height={50} alt="Umurava hero image" />
+          <Image src={hero3} height={50} alt="TalentBridge hero image" />
         </div>
       </div>
     </div>

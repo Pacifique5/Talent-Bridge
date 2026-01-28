@@ -39,7 +39,7 @@ export default function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-20">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-            Why Choose Umurava Skills Challenges?
+            Why Choose TalentBridge Skills Challenges?
           </h2>
           <p className="text-gray-600 dark:text-gray-300 text-lg max-w-3xl mx-auto">
             Join thousands of professionals who have accelerated their careers through our innovative project-based learning platform.
