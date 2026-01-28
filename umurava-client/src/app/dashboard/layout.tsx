@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
@@ -18,13 +18,15 @@ import {
   Mail,
   Edit,
   Moon,
-  Sun
+  Sun,
+  X
 } from "lucide-react";
 import { RootState, AppDispatch } from "@/store";
 import { logoutUser, initializeAuth } from "@/store/authSlice";
 import { useTheme } from "@/contexts/ThemeContext";
 import ProfileModal from "@/components/dashboard/ProfileModal";
 import ChangePasswordModal from "@/components/dashboard/ChangePasswordModal";
+import UpdateEmailModal from "@/components/dashboard/UpdateEmailModal";
 
 export default function DashboardLayout({
   children,
@@ -39,6 +41,9 @@ export default function DashboardLayout({
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showAccountSettings, setShowAccountSettings] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // Initialize auth state from localStorage
@@ -75,22 +80,31 @@ export default function DashboardLayout({
     { name: 'Community', href: '/dashboard/community', icon: Users },
   ];
 
+  const handleUploadPhoto = () => {
+    fileInputRef.current?.click();
+    setShowProfileMenu(false);
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // TODO: Implement actual image upload to server
+      console.log('Uploading image:', file);
+      // For now, just show success message
+      alert('Image upload functionality will be implemented with backend integration');
+    }
+  };
+
+  const handleUpdateEmail = () => {
+    setShowEmailModal(true);
+    setShowProfileMenu(false);
+  };
+
   const profileMenuItems = [
-    { 
-      name: 'View Profile', 
-      icon: User, 
-      action: () => {
-        setShowProfileModal(true);
-        setShowProfileMenu(false);
-      }
-    },
     { 
       name: 'Upload Photo', 
       icon: Camera, 
-      action: () => {
-        console.log('Upload Photo');
-        setShowProfileMenu(false);
-      }
+      action: handleUploadPhoto
     },
     { 
       name: 'Change Password', 
@@ -103,16 +117,13 @@ export default function DashboardLayout({
     { 
       name: 'Update Email', 
       icon: Mail, 
-      action: () => {
-        console.log('Update Email');
-        setShowProfileMenu(false);
-      }
+      action: handleUpdateEmail
     },
     { 
       name: 'Account Settings', 
       icon: Settings, 
       action: () => {
-        console.log('Account Settings');
+        setShowAccountSettings(true);
         setShowProfileMenu(false);
       }
     },
@@ -277,6 +288,133 @@ export default function DashboardLayout({
       <ChangePasswordModal 
         isOpen={showPasswordModal} 
         onClose={() => setShowPasswordModal(false)} 
+      />
+      <UpdateEmailModal 
+        isOpen={showEmailModal} 
+        onClose={() => setShowEmailModal(false)} 
+      />
+      
+      {/* Account Settings Modal */}
+      {showAccountSettings && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex min-h-screen items-center justify-center p-4">
+            <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={() => setShowAccountSettings(false)} />
+            
+            <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-lg w-full">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Account Settings</h2>
+                <button
+                  onClick={() => setShowAccountSettings(false)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Profile Picture */}
+                <div className="flex items-center space-x-4">
+                  <div className="w-16 h-16 bg-blue-light dark:bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    {user?.firstName?.[0]}{user?.lastName?.[0]}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                      {user?.firstName} {user?.lastName}
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">User Profile</p>
+                  </div>
+                </div>
+
+                {/* User Information */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        First Name
+                      </label>
+                      <p className="text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                        {user?.firstName || 'Not set'}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Last Name
+                      </label>
+                      <p className="text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                        {user?.lastName || 'Not set'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Email Address
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      {user?.email || 'Not set'}
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      User ID
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      {user?.id || 'Not available'}
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Account Status
+                    </label>
+                    <p className="text-sm text-green-600 dark:text-green-400 bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      Active
+                    </p>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Member Since
+                    </label>
+                    <p className="text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 p-2 rounded">
+                      {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Not available'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <button
+                    onClick={() => {
+                      setShowAccountSettings(false);
+                      setShowProfileModal(true);
+                    }}
+                    className="flex-1 px-4 py-2 bg-blue-light text-white rounded-lg hover:bg-blue-dark transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Edit className="h-4 w-4" />
+                    Edit Profile
+                  </button>
+                  <button
+                    onClick={() => setShowAccountSettings(false)}
+                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Hidden file input for photo upload */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleImageUpload}
+        className="hidden"
       />
     </div>
   );

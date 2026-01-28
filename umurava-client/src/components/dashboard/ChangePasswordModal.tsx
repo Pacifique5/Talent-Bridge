@@ -69,14 +69,14 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
       <div className="flex min-h-screen items-center justify-center p-4">
         <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose} />
         
-        <div className="relative bg-white rounded-xl shadow-xl max-w-md w-full">
-          <div className="flex items-center justify-between p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Change Password</h2>
+        <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md w-full">
+          <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Change Password</h2>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
             >
-              <X className="h-5 w-5 text-gray-500" />
+              <X className="h-5 w-5 text-gray-500 dark:text-gray-400" />
             </button>
           </div>
 
@@ -169,9 +169,9 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
             </div>
 
             {/* Password Requirements */}
-            <div className="bg-gray-50 rounded-lg p-3">
-              <p className="text-sm text-gray-600 mb-2">Password requirements:</p>
-              <ul className="text-xs text-gray-500 space-y-1">
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Password requirements:</p>
+              <ul className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
                 <li>• At least 6 characters long</li>
                 <li>• Must be different from current password</li>
               </ul>
@@ -182,7 +182,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 disabled={loading}
               >
                 Cancel

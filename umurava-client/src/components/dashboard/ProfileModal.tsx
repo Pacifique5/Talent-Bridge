@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { X, User, Camera, Save } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
@@ -12,6 +12,8 @@ interface ProfileModalProps {
 
 export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const { user } = useSelector((state: RootState) => state.auth);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
@@ -20,10 +22,25 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
   if (!isOpen) return null;
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCameraClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement profile update
-    console.log("Profile update:", formData);
+    // TODO: Implement profile update with image
+    console.log("Profile update:", formData, "Image:", profileImage);
     onClose();
   };
 
@@ -54,17 +71,33 @@ export default function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
             {/* Profile Picture */}
             <div className="flex flex-col items-center">
               <div className="relative">
-                <div className="w-24 h-24 bg-blue-light dark:bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                  {user?.firstName?.[0]}{user?.lastName?.[0]}
+                <div className="w-24 h-24 bg-blue-light dark:bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
+                  {profileImage ? (
+                    <img 
+                      src={profileImage} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    `${user?.firstName?.[0]}${user?.lastName?.[0]}`
+                  )}
                 </div>
                 <button
                   type="button"
+                  onClick={handleCameraClick}
                   className="absolute bottom-0 right-0 p-2 bg-white dark:bg-gray-700 rounded-full shadow-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                 >
                   <Camera className="h-4 w-4 text-gray-600 dark:text-gray-300" />
                 </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
               </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Click to upload new photo</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Click camera icon to upload new photo</p>
             </div>
 
             {/* Form Fields */}
