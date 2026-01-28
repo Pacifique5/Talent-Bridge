@@ -32,52 +32,27 @@ export default function PartnersSection() {
 
       {/* The marquee */}
       <div className="overflow-hidden">
-        <div className="flex space-x-10 animate-marquee">
-          {partners.map((partner, index) => (
+        <div className="flex space-x-10 animate-scroll">
+          {partners.concat(partners).map((partner, index) => (
             <Image
               key={index}
               src={partner}
               alt="partner logo"
-              className="h-12 w-auto opacity-70 hover:opacity-100 transition-opacity duration-300"
+              className="h-12 w-auto opacity-70 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
             />
           ))}
         </div>
-        <div className="flex space-x-10 animate-marquee-reverse mt-4">
-          {partners.map((partner, index) => (
+        <div className="flex space-x-10 animate-scroll-reverse mt-4">
+          {partners.concat(partners).map((partner, index) => (
             <Image
               key={index}
               src={partner}
               alt="partner logo"
-              className="h-12 w-auto opacity-70 hover:opacity-100 transition-opacity duration-300"
+              className="h-12 w-auto opacity-70 hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
             />
           ))}
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes marquee {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-100%);
-          }
-        }
-        @keyframes marquee-reverse {
-          from {
-            transform: translateX(-100%);
-          }
-          to {
-            transform: translateX(0);
-          }
-        }
-        .animate-marquee {
-          animation: marquee 20s linear infinite;
-        }
-        .animate-marquee-reverse {
-          animation: marquee-reverse 20s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }
