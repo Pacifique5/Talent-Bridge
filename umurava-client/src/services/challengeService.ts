@@ -21,7 +21,8 @@ export const challengeService = {
   },
 
   async createChallenge(challenge: Omit<Challenge, 'id' | 'createdAt'>): Promise<Challenge> {
-    console.log("🚀 Frontend: Creating challenge with auth");
+    console.log("🚀 Frontend: Creating challenge with data:", challenge);
+    console.log("🚀 Frontend: Auth headers:", authService.getAuthHeaders());
     
     const response = await fetch(`${API_BASE_URL}/api/challenges`, {
       method: 'POST',
@@ -29,14 +30,30 @@ export const challengeService = {
       body: JSON.stringify(challenge),
     });
     
+    console.log("📥 Frontend: Response status:", response.status);
+    console.log("📥 Frontend: Response headers:", Object.fromEntries(response.headers.entries()));
+    
     if (!response.ok) {
-      const error = await response.json();
-      console.error("❌ Frontend: Create challenge error:", error);
-      throw new Error(error.message || 'Failed to create challenge');
+      let error;
+      try {
+        error = await response.json();
+        console.error("❌ Frontend: Create challenge error:", error);
+        
+        // Handle validation errors specifically
+        if (error.errors && Array.isArray(error.errors)) {
+          const validationMessages = error.errors.map((err: any) => err.msg).join(', ');
+          throw new Error(`Validation failed: ${validationMessages}`);
+        }
+        
+        throw new Error(error.message || 'Failed to create challenge');
+      } catch (parseError) {
+        console.error("❌ Frontend: Error parsing response:", parseError);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
     }
     
     const result = await response.json();
-    console.log("✅ Frontend: Challenge created successfully");
+    console.log("✅ Frontend: Challenge created successfully:", result);
     return result;
   },
 

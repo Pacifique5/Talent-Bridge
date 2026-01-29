@@ -3,7 +3,9 @@ const ChallengeService = require("../services/challengeService");
 const ChallengeController = {
     async create(req, res) {
         try {
-            console.log("🚀 Creating challenge for user:", req.user?.email);
+            console.log("🚀 Backend: Challenge creation request received");
+            console.log("📤 Backend: Request body:", req.body);
+            console.log("👤 Backend: User from auth middleware:", req.user);
             
             // Add the user ID to the challenge data
             const challengeData = {
@@ -11,12 +13,15 @@ const ChallengeController = {
                 createdBy: req.user?.id
             };
             
+            console.log("📝 Backend: Challenge data to create:", challengeData);
+            
             const challenge = await ChallengeService.createChallenge(challengeData);
-            console.log("✅ Challenge created successfully:", challenge.title);
+            console.log("✅ Backend: Challenge created successfully:", challenge);
             res.status(201).json(challenge);
         } catch (error) {
-            console.error("❌ Error creating challenge:", error);
-            res.status(500).json({ message: "Error creating challenge", error });
+            console.error("❌ Backend: Error creating challenge:", error);
+            console.error("❌ Backend: Error stack:", error.stack);
+            res.status(500).json({ message: "Error creating challenge", error: error.message });
         }
     },
 
