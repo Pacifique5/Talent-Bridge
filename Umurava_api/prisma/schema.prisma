@@ -24,6 +24,7 @@ model Challenge {
   description String
   difficulty  String
   duration    Int
+  targetUrl   String?  // Optional target URL for security challenges
   createdAt   DateTime @default(now())
   createdBy   String?
   creator     User?    @relation(fields: [createdBy], references: [id])

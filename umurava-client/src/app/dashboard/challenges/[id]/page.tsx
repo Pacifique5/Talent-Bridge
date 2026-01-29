@@ -181,14 +181,14 @@ const ChallengeDetailPage = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-mono text-sm text-blue-700 dark:text-blue-300">
-                        https://vulnerable-app.talentbridge.com
+                        https://mpacifique.vercel.app/
                       </p>
                       <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                        ⚠️ This is a controlled environment for educational purposes
+                        🎯 Real-world portfolio website for security assessment
                       </p>
                     </div>
                     <a
-                      href="https://vulnerable-app.talentbridge.com"
+                      href="https://mpacifique.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
@@ -296,13 +296,15 @@ const ChallengeDetailPage = () => {
                 </button>
               ) : (
                 <div className="text-center">
-                  <div className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 mb-3">
+                  <button className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 mb-3">
                     <CheckCircle className="h-5 w-5" />
                     Participating
-                  </div>
-                  <button className="w-full bg-blue-light hover:bg-blue-dark text-white py-2 px-4 rounded-lg font-medium transition-colors">
-                    View Progress
                   </button>
+                  <Link href={`/dashboard/challenges/${challengeId}/progress`}>
+                    <button className="w-full bg-blue-light hover:bg-blue-dark text-white py-2 px-4 rounded-lg font-medium transition-colors">
+                      View Progress
+                    </button>
+                  </Link>
                 </div>
               )}
               

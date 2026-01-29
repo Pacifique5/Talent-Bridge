@@ -4,5 +4,6 @@ export interface Challenge {
     description: string;
     difficulty: string;
     duration: number;
+    targetUrl?: string; // Optional target URL for security challenges
     createdAt: string;
 }
